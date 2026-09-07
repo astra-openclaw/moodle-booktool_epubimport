@@ -73,7 +73,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: curl, intl, mysqli, pdo_pgsql, pgsql, soap, zip
+          extensions: curl, dom, intl, mysqli, pdo_pgsql, pgsql, soap, zip
           ini-values: max_input_vars=5000
           coverage: none
 

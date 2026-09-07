@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * Adds the EPUB import action to the book settings navigation.
  *
@@ -39,11 +41,16 @@ function booktool_epubimport_extend_settings_navigation(settings_navigation $set
     }
 
     $url = new moodle_url('/mod/book/tool/epubimport/index.php', ['id' => $page->cm->id]);
-    $node->add(
+    $importnode = $node->add(
         get_string('importepub', 'booktool_epubimport'),
         $url,
         navigation_node::TYPE_SETTING,
         null,
-        'importepub'
+        'importepub',
+        null
     );
+
+    if (method_exists($importnode, 'set_force_into_more_menu')) {
+        $importnode->set_force_into_more_menu(true);
+    }
 }

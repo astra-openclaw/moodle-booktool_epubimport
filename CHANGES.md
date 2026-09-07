@@ -1,5 +1,23 @@
 # Changes
 
+## Unreleased
+
+### Changed
+- Documented the Moodle 5 PHP floor as PHP 8.2+ and listed the required `zip`
+  and `dom`/`libxml` PHP extensions used by the importer.
+- Aligned the plugin's Moodle core requirement with Moodle 5.0+.
+
+### Fixed
+- Fixed Moodle 5 redirect notifications by using Moodle's namespaced
+  `core\output\notification` constants.
+- Forced the EPUB import action into the Book activity More menu when Moodle's
+  navigation node supports that placement.
+- Added a preflight runtime check for missing `zip` or `dom` PHP support before
+  EPUB extraction starts.
+- Added developer-debug logging for unexpected import exceptions so generic
+  user-facing failures have a traceable underlying cause during debugging.
+- Corrected the README clone URL.
+
 ## 2.0.0-beta2 (2026-04-11)
 
 Follow-up fixes and release preparation for Moodle plugin review and re-submission.
@@ -29,7 +47,7 @@ Complete rewrite for Moodle 5.x compatibility.
 
 ### Changed
 - Replaced monolithic `locallib.php` with namespaced classes under `classes/`
-- Minimum requirement: Moodle 5.0+ / PHP 8.1+
+- Minimum requirement: Moodle 5.0+ / PHP 8.2+
 - Replaced deprecated `print_error()` with `moodle_exception`
 - Updated capability definitions for current Moodle API
 

@@ -26,6 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'booktool_epubimport';
 $plugin->version = 2026041100;
-$plugin->requires = 2024100700;
+$plugin->requires = 2025041400;
 $plugin->maturity = MATURITY_BETA;
 $plugin->release = '2.0.0-beta2';

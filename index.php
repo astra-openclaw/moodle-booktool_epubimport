@@ -27,6 +27,7 @@ use booktool_epubimport\epub_parser;
 use booktool_epubimport\fixed_layout_importer;
 use booktool_epubimport\reflowable_importer;
 use booktool_epubimport\toc_mapper;
+use core\output\notification;
 // Moodle core classes live in the global namespace; no use statements are needed for
 // context_course, context_module, moodle_url, stdClass, stored_file, or Throwable.
 
@@ -161,6 +162,8 @@ if (($data = $mform->get_data()) !== null) {
     $parser = null;
 
     try {
+        booktool_epubimport_require_runtime_extensions();
+
         $file = booktool_epubimport_get_uploaded_file((int)($data->importfile ?? 0));
         $parser = new epub_parser($file, make_request_directory());
         $parser->extract();
@@ -215,6 +218,7 @@ if (($data = $mform->get_data()) !== null) {
         );
     } catch (Throwable $exception) {
         $redirecturl = $PAGE->url;
+        booktool_epubimport_debug_import_exception($exception);
         $redirectmessage = booktool_epubimport_build_error_message($exception);
         $redirecttype = notification::NOTIFY_ERROR;
     } finally {
@@ -262,6 +266,30 @@ function booktool_epubimport_resolve_section_number(stdClass $cm): int {
     $sectionnum = $DB->get_field('course_sections', 'section', ['id' => $cm->section]);
 
     return $sectionnum === false ? 0 : (int)$sectionnum;
+}
+
+/**
+ * Verifies PHP extensions needed by the EPUB import pipeline.
+ */
+function booktool_epubimport_require_runtime_extensions(): void {
+    $missing = [];
+
+    if (!class_exists('ZipArchive', false)) {
+        $missing[] = 'zip';
+    }
+
+    if (!class_exists('DOMDocument', false)) {
+        $missing[] = 'dom';
+    }
+
+    if ($missing !== []) {
+        throw new moodle_exception(
+            'error:missingphpextensions',
+            'booktool_epubimport',
+            '',
+            implode(', ', $missing)
+        );
+    }
 }
 
 /**
@@ -414,6 +442,29 @@ function booktool_epubimport_get_layout_label(string $layout): string {
     }
 
     return $layout;
+}
+
+/**
+ * Records unexpected import failures for developer debugging without exposing
+ * raw exception details in normal production notifications.
+ *
+ * @param Throwable $exception Import exception.
+ */
+function booktool_epubimport_debug_import_exception(Throwable $exception): void {
+    if ($exception instanceof moodle_exception || !function_exists('debugging')) {
+        return;
+    }
+
+    $details = get_class($exception);
+    $message = trim($exception->getMessage());
+    if ($message !== '') {
+        $details .= ': ' . $message;
+    }
+
+    debugging(
+        'EPUB import failed: ' . $details,
+        defined('DEBUG_DEVELOPER') ? DEBUG_DEVELOPER : 0
+    );
 }
 
 /**

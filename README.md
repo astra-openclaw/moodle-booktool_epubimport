@@ -9,8 +9,8 @@ Component name: `booktool_epubimport`
 ## Requirements
 
 - **Moodle 5.0+** (tested on 5.1.3)
-- PHP 8.1+
-- PHP `zip` extension
+- PHP 8.2+ (required by Moodle 5.0+)
+- PHP extensions: `zip`, `dom`/`libxml`
 
 ## Installation
 
@@ -18,7 +18,7 @@ Component name: `booktool_epubimport`
 
 ```bash
 cd /path/to/moodle/mod/book/tool
-git clone https://github.com/astra-openclaw/moodle-booktool_importepub.git epubimport
+git clone https://github.com/astra-openclaw/moodle-booktool_epubimport.git epubimport
 ```
 
 ### Manual Download
@@ -43,6 +43,10 @@ Not yet listed. Use one of the methods above.
 The plugin auto-detects EPUB layout:
 - **Reflowable** — imports text content as editable Moodle chapters
 - **Fixed-layout** — imports page images (one image per chapter)
+
+If an import fails with the generic EPUB error while Moodle developer debugging
+is enabled, check the Moodle debug output/logs for the underlying exception
+class and message.
 
 ## Advanced: CSS Text Overlay EPUBs
 
