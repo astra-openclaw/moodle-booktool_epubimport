@@ -34,8 +34,7 @@ $string['error:emptyepub'] = 'The EPUB file appears to be empty.';
 $string['error:fixedlayoutrender'] = 'Fixed-layout rendering tools are not available or failed. Install Node.js and Playwright, then try again.';
 $string['error:importfailed'] = 'The EPUB import could not be completed. Please check the EPUB package and try again.';
 $string['error:invalidepub'] = 'Invalid EPUB file. Please upload a valid .epub file.';
-$string['error:missingphpextensions'] = 'The EPUB import requires the following missing PHP extension(s): {$a}. ' .
-    'Install or enable them, restart PHP, and try again.';
+$string['error:missingphpextensions'] = 'The EPUB import requires the following missing PHP extension(s): {$a}. Install or enable them, restart PHP, and try again.';
 $string['error:notoc'] = 'No table of contents found in EPUB.';
 $string['fixedlayout'] = 'Fixed layout EPUB detected; importing page images.';
 $string['importchapters'] = 'Import chapters from ebook';
